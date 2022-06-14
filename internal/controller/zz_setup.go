@@ -21,15 +21,23 @@ import (
 
 	"github.com/crossplane/terrajet/pkg/controller"
 
-	resource "github.com/crossplane-contrib/provider-jet-template/internal/controller/null/resource"
-	providerconfig "github.com/crossplane-contrib/provider-jet-template/internal/controller/providerconfig"
+	groupassignments "github.com/crossplane-contrib/provider-jet-okta/internal/controller/app/groupassignments"
+	oauth "github.com/crossplane-contrib/provider-jet-okta/internal/controller/app/oauth"
+	oauthapiscope "github.com/crossplane-contrib/provider-jet-okta/internal/controller/app/oauthapiscope"
+	group "github.com/crossplane-contrib/provider-jet-okta/internal/controller/group/group"
+	rule "github.com/crossplane-contrib/provider-jet-okta/internal/controller/group/rule"
+	providerconfig "github.com/crossplane-contrib/provider-jet-okta/internal/controller/providerconfig"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		resource.Setup,
+		groupassignments.Setup,
+		oauth.Setup,
+		oauthapiscope.Setup,
+		group.Setup,
+		rule.Setup,
 		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
